@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/cbackground2"
+    android:background="@android:color/white"
     tools:context="com.garden.gardenorder.SignIn">
 
 
@@ -27,8 +27,9 @@
             android:textColor="@android:color/black"
             android:inputType="phone"
             android:layout_height="40dp"
-            android:background="@drawable/button_disabled"
-            android:layout_margin="16dp" />
+            android:background="@drawable/edit_text_style"
+            android:layout_margin="16dp"
+            android:paddingLeft="10dp"/>
 
         <CheckBox
             android:id="@+id/ckbRemember"
@@ -54,7 +55,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="16dp"
         android:text="Order"
-        android:textColor="@android:color/white"
+        android:textColor="#c3e0fa"
         android:background="@drawable/button_disabled"
         />
 

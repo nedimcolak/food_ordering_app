@@ -37,34 +37,6 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference userRf = db.getReference("user");
 
-        final SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
-
-        if (sharedPreferences.getString("phone", null).isEmpty()){
-            Intent i = new Intent(MainActivity.this, SignIn.class);
-            startActivity(i);
-        }
-        else{
-
-            userRf.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    User user = new User(dataSnapshot.child(sharedPreferences.getString("phone", null)).child("name").toString(), sharedPreferences.getString("phone", null));
-                    Intent homeIntent = new Intent(MainActivity.this, Home.class);
-                    Common.currentUser = user;
-                    startActivity(homeIntent);
-                    finish();
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-        }
-
         txtSlogan = (TextView)findViewById(R.id.txtSlogan);
         Typeface face = Typeface.createFromAsset(getAssets(),"fonts/WorkSans-Bold.ttf");
         txtSlogan.setTypeface(face);

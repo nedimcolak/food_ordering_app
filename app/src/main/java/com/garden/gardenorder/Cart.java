@@ -32,14 +32,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.rengwuxian.materialedittext.MaterialEditText;
+
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import static com.garden.gardenorder.Common.Common.currentUser;
-import info.hoang8f.widget.FButton;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -102,7 +101,7 @@ public class Cart extends AppCompatActivity {
         LayoutInflater inflater = this.getLayoutInflater();
         View order_adress_comment = inflater.inflate(R.layout.order_adress_comment, null);
 
-        final MaterialEditText edtComment = (MaterialEditText) order_adress_comment.findViewById(R.id.edtComment);
+        final EditText edtComment = (EditText) order_adress_comment.findViewById(R.id.edtComment);
 
         alertDialog.setView(order_adress_comment);
         alertDialog.setPositiveButton("Submit", new DialogInterface.OnClickListener() {

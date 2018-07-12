@@ -1,17 +1,16 @@
 package com.garden.gardenorder;
 
+
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,14 +32,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
-public class FoodDetail extends AppCompatActivity {
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link FoodDetailFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class FoodDetailFragment extends Fragment {
+
+    private static final String ARG_FOOD_ID = "Food ID";
+
+    //UI elements
+
+    Context context = getActivity().getApplicationContext();
 
     TextView food_name, food_price;
     ImageView food_image;
@@ -52,8 +57,6 @@ public class FoodDetail extends AppCompatActivity {
     FirebaseRecyclerAdapter<Topping, ToppingViewHolder> toppingAdapter;
     RecyclerView.LayoutManager toppingLayoutManager;
 
-    String foodId="";
-
     String toppings;
 
     ArrayList<String> checkedToppings = new ArrayList<>();
@@ -63,18 +66,47 @@ public class FoodDetail extends AppCompatActivity {
     DatabaseReference food;
     DatabaseReference topping;
 
+
+    private String foodId;
+
     Food currentFood;
 
+
+    public FoodDetailFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param foodId Food ID
+     * @return A new instance of fragment FoodDetailFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static FoodDetailFragment newInstance(String foodId) {
+        FoodDetailFragment fragment = new FoodDetailFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_FOOD_ID, foodId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_food_detail);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_food_detail, container, false);
 
         //Setting layout manager for the recyclerView
-        toppingCheckBoxView = (RecyclerView) findViewById(R.id.food_topping);
-        toppingLayoutManager = new LinearLayoutManager(this);
+        toppingCheckBoxView = (RecyclerView) rootView.findViewById(R.id.food_topping);
+        toppingLayoutManager = new LinearLayoutManager(context);
         toppingCheckBoxView.setLayoutManager(toppingLayoutManager);
-        toppingCheckBoxView.addItemDecoration(new Divider(this));
+        toppingCheckBoxView.addItemDecoration(new Divider(context));
         //Defining firebase instance and setting references
         database = FirebaseDatabase.getInstance();
         food = database.getReference("Food");
@@ -82,8 +114,8 @@ public class FoodDetail extends AppCompatActivity {
 
         //Initialize view
 
-        numberButton = (ElegantNumberButton)findViewById(R.id.number_button);
-        btnCart = (FloatingActionButton)findViewById(R.id.btnCart);
+        numberButton = (ElegantNumberButton)rootView.findViewById(R.id.number_button);
+        btnCart = (FloatingActionButton)rootView.findViewById(R.id.btnCart);
 
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +123,7 @@ public class FoodDetail extends AppCompatActivity {
 
                 toppings = toppingListString(checkedToppings);
 
-                new Database(getBaseContext()).addToCart(new Order(
+                new Database(context).addToCart(new Order(
                         foodId,
                         currentFood.getName(),
                         numberButton.getNumber(),
@@ -99,30 +131,30 @@ public class FoodDetail extends AppCompatActivity {
                         toppings
                 ));
 
-                Toast.makeText(FoodDetail.this, "Added to cart!", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Added to cart!", Toast.LENGTH_LONG).show();
 
             }
         });
 
-        food_name = (TextView)findViewById(R.id.food_name);
-        food_price = (TextView)findViewById(R.id.food_price);
-        food_image = (ImageView)findViewById(R.id.img_food);
+        food_name = (TextView)rootView.findViewById(R.id.food_name);
+        food_price = (TextView)rootView.findViewById(R.id.food_price);
+        food_image = (ImageView)rootView.findViewById(R.id.img_food);
 
-        collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing);
+        collapsingToolbarLayout = (CollapsingToolbarLayout)rootView.findViewById(R.id.collapsing);
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppbar);
         collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppbar);
 
         //Get Food ID from Intent
-        if(getIntent() != null)
-            foodId = getIntent().getStringExtra("FoodId");
+        foodId = getArguments().getString("Food ID");
         if(!foodId.isEmpty())
         {
-            if (Common.isConnected(getBaseContext())) {
+            if (Common.isConnected(getActivity().getApplicationContext())) {
                 getDetailFood(foodId);
             } else
-                Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
-            return;
+                Toast.makeText(getActivity().getApplicationContext(), "No internet connection", Toast.LENGTH_SHORT).show();
         }
+
+        return rootView;
 
     }
 
@@ -137,7 +169,7 @@ public class FoodDetail extends AppCompatActivity {
                 currentFood = dataSnapshot.getValue(Food.class);
 
                 //Set image
-                Picasso.with(getBaseContext()).load(currentFood.getImage())
+                Picasso.with(context).load(currentFood.getImage())
                         .into(food_image);
 
                 collapsingToolbarLayout.setTitle(currentFood.getName());
@@ -199,4 +231,6 @@ public class FoodDetail extends AppCompatActivity {
         else sb.append("None");
         return sb.toString();
     }
-}
+    }
+
+

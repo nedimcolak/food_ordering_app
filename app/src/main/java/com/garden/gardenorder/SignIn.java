@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.rengwuxian.materialedittext.MaterialEditText;
+
 
 public class SignIn extends AppCompatActivity {
     EditText edtPhone;
@@ -33,7 +33,7 @@ public class SignIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        edtPhone = (MaterialEditText)findViewById(R.id.edtPhone);
+        edtPhone = (EditText)findViewById(R.id.edtPhone);
         btnSignIn = (Button)findViewById(R.id.btnSignIn);
         chkRemember = (CheckBox) findViewById(R.id.ckbRemember);
 
@@ -83,7 +83,7 @@ public class SignIn extends AppCompatActivity {
                                 User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
                                 // set Phone, odnosno broj stola (trenutno)
                                 user.setPhone(edtPhone.getText().toString());
-                                Intent homeIntent = new Intent(SignIn.this, Home.class);
+                                Intent homeIntent = new Intent(SignIn.this, CoreActivity.class);
                                 Common.currentUser = user;
                                 startActivity(homeIntent);
                                 finish();

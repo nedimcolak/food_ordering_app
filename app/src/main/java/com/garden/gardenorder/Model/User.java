@@ -18,8 +18,6 @@ public class User {
         Name = name;
         Phone = phone;
         IsStaff = "false";
-
-
     }
 
     public String getIsStaff() {

@@ -3,8 +3,6 @@ package com.garden.gardenorder.ViewHolder;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
-
-import com.garden.gardenorder.FoodDetail;
 import com.garden.gardenorder.R;
 
 import java.util.List;

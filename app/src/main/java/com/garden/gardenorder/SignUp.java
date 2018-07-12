@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.garden.gardenorder.Common.Common;
@@ -15,21 +16,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.rengwuxian.materialedittext.MaterialEditText;
-
-import info.hoang8f.widget.FButton;
 
 public class SignUp extends AppCompatActivity {
 
-    MaterialEditText edtNameSignUp, edtPhoneSignUp;
+    EditText edtNameSignUp, edtPhoneSignUp;
     Button signUpbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        edtNameSignUp = (MaterialEditText)findViewById(R.id.nameSignUp);
-        edtPhoneSignUp = (MaterialEditText)findViewById(R.id.phoneSignUp);
+        edtNameSignUp = (EditText)findViewById(R.id.nameSignUp);
+        edtPhoneSignUp = (EditText)findViewById(R.id.phoneSignUp);
         signUpbtn = (Button)findViewById(R.id.btnSignUp);
 
         //Startanje Firebasea
